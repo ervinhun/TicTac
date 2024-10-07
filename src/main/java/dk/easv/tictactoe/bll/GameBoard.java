@@ -47,7 +47,7 @@ public class GameBoard implements IGameBoard
      */
     public boolean play(int col, int row)
     {
-        if (board[col][row] == BOARD_EMPTY_STATE) {
+        if (board[col][row] == BOARD_EMPTY_STATE && !isGameOver()) {
             numberOfSteps++;
             if (activePlayer == BOARD_PLAYER1) {
                 board[col][row] = BOARD_PLAYER1;
