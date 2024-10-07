@@ -14,6 +14,7 @@ public class GameBoard implements IGameBoard
     private static final int BOARD_PLAYER1 = 0;
     private static final int BOARD_PLAYER2 = 1;
     private static final int BOARD_SIZE = 3;
+    private static final int FOR_WIN = 3;
     private int activePlayer = 0;
     private int[][] board = new int[BOARD_SIZE][BOARD_SIZE];
     private int numberOfSteps = 0;
@@ -93,15 +94,31 @@ public class GameBoard implements IGameBoard
     }
 
     private boolean checkDiagon(int checkForPlayer) {
-        return (board[0][0] == checkForPlayer && board[1][1] == checkForPlayer && board[2][2] == checkForPlayer) ||
-                (board[0][2] == checkForPlayer && board[1][1] == checkForPlayer && board[2][0] == checkForPlayer);
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            if (board[i][i] == checkForPlayer && board[i + 1][i + 1] == checkForPlayer && board[i + 2][i + 2] == checkForPlayer) {
+                return true;
+            }
+        }
+
+        // Check anti-diagonal for 3 consecutive matches
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            if (board[i][BOARD_SIZE - 1 - i] == checkForPlayer &&
+                    board[i + 1][BOARD_SIZE - 2 - i] == checkForPlayer &&
+                    board[i + 2][BOARD_SIZE - 3 - i] == checkForPlayer) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean checkColumn(int checkForPlayer) {
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[i][0] == checkForPlayer && board[i][1] == checkForPlayer && board[i][2] == checkForPlayer) {
-                System.out.println("checkColumn is true");
-                return true;
+            for (int j = 0; j <= (BOARD_SIZE-FOR_WIN); j++) {
+                if (board[i][j] == checkForPlayer && board[i][j + 1] == checkForPlayer && board[i][j + 2] == checkForPlayer) {
+                    System.out.println("checkColumn is true");
+                    return true;
+                }
             }
         }
         return false;
@@ -109,9 +126,11 @@ public class GameBoard implements IGameBoard
 
     private boolean checkRows(int checkForPlayer) {
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[0][i] == checkForPlayer && board[1][i] == checkForPlayer && board[2][i] == checkForPlayer) {
-                System.out.println("checkRows is true");
-                return true;
+            for (int j = 0; j <= (BOARD_SIZE-FOR_WIN); j++) {
+                if (board[j][i] == checkForPlayer && board[j + 1][i] == checkForPlayer && board[j + 2][i] == checkForPlayer) {
+                    System.out.println("checkRows is true");
+                    return true;
+                }
             }
         }
         return false;
@@ -124,6 +143,9 @@ public class GameBoard implements IGameBoard
      */
     public int getWinner()
     {
+        /** if it is the turn of Player2, then the previous player was Player1
+         * and if there is a winner, then it is Player1, and vice versa
+         */
         if (activePlayer == BOARD_PLAYER1) {
             return BOARD_PLAYER2;
         }
