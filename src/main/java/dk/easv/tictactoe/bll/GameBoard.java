@@ -94,28 +94,35 @@ public class GameBoard implements IGameBoard
     }
 
     private boolean checkDiagon(int checkForPlayer) {
-        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
-            if (board[i][i] == checkForPlayer && board[i + 1][i + 1] == checkForPlayer && board[i + 2][i + 2] == checkForPlayer) {
-                return true;
+        for (int row = 0; row <= BOARD_SIZE - FOR_WIN; row++) {
+            for (int col = 0; col <= BOARD_SIZE - FOR_WIN; col++) {
+                if (board[row][col] == checkForPlayer &&
+                        board[row + 1][col + 1] == checkForPlayer &&
+                        board[row + 2][col + 2] == checkForPlayer) {
+                    return true;
+                }
             }
         }
 
-        // Check anti-diagonal for 3 consecutive matches
-        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
-            if (board[i][BOARD_SIZE - 1 - i] == checkForPlayer &&
-                    board[i + 1][BOARD_SIZE - 2 - i] == checkForPlayer &&
-                    board[i + 2][BOARD_SIZE - 3 - i] == checkForPlayer) {
-                return true;
+        // Check all anti-diagonals (top-right to bottom-left)
+        for (int row = 0; row <= BOARD_SIZE - FOR_WIN; row++) {
+            for (int col = FOR_WIN - 1; col < BOARD_SIZE; col++) {
+                if (board[row][col] == checkForPlayer &&
+                        board[row + 1][col - 1] == checkForPlayer &&
+                        board[row + 2][col - 2] == checkForPlayer) {
+                    return true;
+                }
             }
         }
-
         return false;
     }
 
     private boolean checkColumn(int checkForPlayer) {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j <= (BOARD_SIZE-FOR_WIN); j++) {
-                if (board[i][j] == checkForPlayer && board[i][j + 1] == checkForPlayer && board[i][j + 2] == checkForPlayer) {
+                if (board[i][j] == checkForPlayer &&
+                        board[i][j + 1] == checkForPlayer &&
+                        board[i][j + 2] == checkForPlayer) {
                     System.out.println("checkColumn is true");
                     return true;
                 }

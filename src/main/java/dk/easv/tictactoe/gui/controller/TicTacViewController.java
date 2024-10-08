@@ -124,7 +124,7 @@ public class TicTacViewController implements Initializable
         switch (winner)
         {
             case -1:
-                message = "It's a draw :-(";
+                message = "The only winning move is\n not to play.";
                 break;
             default:
                 message = "Player " + ++winner + " wins!!!";
