@@ -9,8 +9,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <BorderPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" stylesheets="@../css/Main.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.easv.tictactoe.gui.controller.TicTacViewController">
    <center>
       <GridPane fx:id="gridPane" hgap="4.0" vgap="4.0" BorderPane.alignment="CENTER">
@@ -48,16 +46,11 @@
       </Label>
    </top>
    <bottom>
-      <MenuButton mnemonicParsing="false" onAction="#handleNewGame" text="Menu" BorderPane.alignment="CENTER_RIGHT">
-         <items>
-             <MenuItem fx:id="btnNewGame" text="New game" onAction="#handleNewGame" />
-             <MenuItem fx:id="menuPlayer" text="1 Player" />
-             <MenuItem fx:id="menuSize" text="5x5" onAction="#changeBoardSize" />
-         </items>
-          <BorderPane.margin>
-              <Insets top="10.0" />
-          </BorderPane.margin>
-      </MenuButton>
+      <Button fx:id="btnNewGame" mnemonicParsing="false" onAction="#handleNewGame" text="New Game" BorderPane.alignment="CENTER_RIGHT">
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+      </Button>
    </bottom>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

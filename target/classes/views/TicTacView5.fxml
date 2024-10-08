@@ -74,6 +74,9 @@
                <MenuItem fx:id="menuPlayer" text="1 Player" />
                <MenuItem fx:id="menuSize" text="3x3" onAction="#changeBoardSize" />
            </items>
+           <BorderPane.margin>
+               <Insets top="10.0" />
+           </BorderPane.margin>
        </MenuButton>
    </bottom>
    <padding>
