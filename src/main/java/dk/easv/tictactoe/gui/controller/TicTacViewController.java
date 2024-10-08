@@ -2,19 +2,27 @@
 package dk.easv.tictactoe.gui.controller;
 
 // Java imports
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import dk.easv.tictactoe.gui.TicTacToe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 
 // Project imports
 import dk.easv.tictactoe.bll.GameBoard;
 import dk.easv.tictactoe.bll.IGameBoard;
+import javafx.stage.Stage;
 
 /**
  *
@@ -26,7 +34,10 @@ public class TicTacViewController implements Initializable
     private Label lblPlayer;
 
     @FXML
-    private Button btnNewGame;
+    private MenuItem btnNewGame;
+
+    @FXML
+    private MenuItem menuSize;
 
     @FXML
     private GridPane gridPane;
@@ -142,6 +153,35 @@ public class TicTacViewController implements Initializable
         {
             Button btn = (Button) n;
             btn.setText("");
+        }
+    }
+
+    public void changeBoardSize(ActionEvent event) throws IOException {
+        try {
+            GameBoard boardClass = new GameBoard();
+            int board = boardClass.getBoardSize();
+            FXMLLoader fxmlLoader;
+            if (board == 3) {
+                fxmlLoader = new FXMLLoader(TicTacToe.class.getResource("/views/TicTacView5.fxml"));
+                boardClass.setBoardSize(5);
+
+            } else {
+                fxmlLoader = new FXMLLoader(TicTacToe.class.getResource("/views/TicTacView.fxml"));
+                boardClass.setBoardSize(3);
+            }
+            Parent root = fxmlLoader.load();
+
+            Stage stage = (Stage) gridPane.getScene().getWindow();
+
+            // Set the scene to the new root loaded from FXML
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+
+            // Optionally set the title and show the stage
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

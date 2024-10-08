@@ -13,7 +13,7 @@ public class GameBoard implements IGameBoard
     private static final int BOARD_EMPTY_STATE = 99;
     private static final int BOARD_PLAYER1 = 0;
     private static final int BOARD_PLAYER2 = 1;
-    private static final int BOARD_SIZE = 3;
+    private static int BOARD_SIZE = 3;
     private static final int FOR_WIN = 3;
     private int activePlayer = 0;
     private int[][] board = new int[BOARD_SIZE][BOARD_SIZE];
@@ -171,8 +171,15 @@ public class GameBoard implements IGameBoard
             for (int j = 0; j < BOARD_SIZE; j++) {
                 board[i][j] = BOARD_EMPTY_STATE;
             }
-        activePlayer = BOARD_PLAYER1;
+        //activePlayer = BOARD_PLAYER1;
         numberOfSteps = 0;
         }
+    }
+
+    public int getBoardSize() {
+        return BOARD_SIZE;
+    }
+    public void setBoardSize(int boardSize) {
+        BOARD_SIZE = boardSize;
     }
 }
