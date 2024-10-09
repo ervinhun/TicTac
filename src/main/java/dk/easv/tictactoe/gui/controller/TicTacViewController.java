@@ -5,6 +5,7 @@ package dk.easv.tictactoe.gui.controller;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ResourceBundle;
 
 import dk.easv.tictactoe.gui.TicTacToe;
@@ -70,7 +71,8 @@ public class TicTacViewController implements Initializable
                 int player = game.getNextPlayer();
                 Button btn = (Button) event.getSource();
                 String xOrO = player == 0 ? "X" : "O";
-                    btn.setText(xOrO);
+                btn.setText(xOrO);
+
                 if (game.isGameOver())
                 {
                     displayWinner(game.getWinner());
@@ -78,7 +80,6 @@ public class TicTacViewController implements Initializable
                 else
                 {
                         setPlayer();
-
                 }
             }
         } catch (Exception e)
@@ -134,14 +135,23 @@ public class TicTacViewController implements Initializable
         int displayPlayer = game.getNextPlayer();
 
         if (playerNumber == 1 && displayPlayer == 1) {
-            int [] move = game.computerRandomPlay();
+            int [] move = game.copmuterIsPlaying();
             setButtonText(move[0], move[1]);
+            if (game.isGameOver()) {
+                displayWinner(game.getWinner());
+            }
             //game.getNextPlayer();
         }
-        displayPlayer++;
-        lblPlayer.setText(TXT_PLAYER + displayPlayer);
-        game.getNextPlayer();
-
+        if (game.isGameOver())
+        {
+            displayWinner(game.getWinner());
+        }
+        else
+        {
+            displayPlayer++;
+            lblPlayer.setText(TXT_PLAYER + displayPlayer);
+            game.getNextPlayer();
+        }
     }
 
     /**
@@ -155,7 +165,7 @@ public class TicTacViewController implements Initializable
         switch (winner)
         {
             case -1:
-                message = "The only winning move is\n not to play.";
+                message = "The only winning move is\nnot to play.";
                 break;
             default:
                 message = "Player " + ++winner + " wins!!!";
@@ -173,6 +183,7 @@ public class TicTacViewController implements Initializable
         {
             Button btn = (Button) n;
             btn.setText("");
+            btn.setStyle("");
         }
         lblPlayer.setText("Player: 1");
     }
@@ -218,10 +229,11 @@ public class TicTacViewController implements Initializable
 
                 Button button = (Button) node;
                 String id = button.getId();
-                    button.setText("C");
-                    //button.setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
-                    System.out.println("Text set at button (" + col + ", " + row + "): " + id);
-                    break;  // Exit the loop once the button is found and updated
+                button.setText("C");
+                //button.setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                System.out.println("Text set at button (" + col + ", " + row + "): " + id);
+
+                break;  // Exit the loop once the button is found and updated
 
             }
         }

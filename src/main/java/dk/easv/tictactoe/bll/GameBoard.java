@@ -1,15 +1,7 @@
 
 package dk.easv.tictactoe.bll;
 
-import dk.easv.tictactoe.gui.controller.TicTacViewController;
-import javafx.concurrent.Task;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,7 +20,7 @@ public class GameBoard implements IGameBoard
     private int activePlayer = 0;
     private int[][] board = new int[BOARD_SIZE][BOARD_SIZE];
     private int numberOfSteps = 0;
-    private int numberOfPlayers = 2;
+    private int numberOfPlayers = 1;
 
     /**
      * Returns 0 for player 0, 1 for player 1.
@@ -65,12 +57,11 @@ public class GameBoard implements IGameBoard
             numberOfSteps++;
             if (activePlayer == BOARD_PLAYER1) {
                 board[col][row] = BOARD_PLAYER1;
-                return true;
             }
             else {
                 board[col][row] = BOARD_PLAYER2;
-                return true;
             }
+            return true;
         }
         else {
             System.out.println("FALSE - " + col + ":" + row + "-" + board[col][row] );
@@ -86,18 +77,16 @@ public class GameBoard implements IGameBoard
      */
     public boolean isGameOver()
     {
-        int winning = 0;
-        int checkForPlayer = BOARD_EMPTY_STATE;
-        if (activePlayer == BOARD_PLAYER1) {
-            checkForPlayer = BOARD_PLAYER2;
-        }
-        else
-            checkForPlayer = BOARD_PLAYER1;
-        if (checkRows(checkForPlayer) || checkColumn(checkForPlayer) || checkDiagon(checkForPlayer)) {
-            System.out.println("Winner is Player " + checkForPlayer);
+        if (checkRows(BOARD_PLAYER1) || checkColumn(BOARD_PLAYER1) || checkDiagon(BOARD_PLAYER1)) {
+            activePlayer = BOARD_PLAYER1;
+            System.out.println("Winner is Player " + activePlayer);
+            return true;
+        } else if (checkRows(BOARD_PLAYER2) || checkColumn(BOARD_PLAYER2) || checkDiagon(BOARD_PLAYER2)) {
+            activePlayer = BOARD_PLAYER2;
+            System.out.println("Winner is Player " + activePlayer);
             return true;
         }
-        if (numberOfSteps == BOARD_SIZE*BOARD_SIZE) {
+        else if (numberOfSteps == BOARD_SIZE*BOARD_SIZE) {
             System.out.println("GAME OVER! Board is full...");
             activePlayer = -1;
             return true;
@@ -107,22 +96,22 @@ public class GameBoard implements IGameBoard
     }
 
     private boolean checkDiagon(int checkForPlayer) {
-        for (int row = 0; row <= BOARD_SIZE - FOR_WIN; row++) {
-            for (int col = 0; col <= BOARD_SIZE - FOR_WIN; col++) {
-                if (board[row][col] == checkForPlayer &&
-                        board[row + 1][col + 1] == checkForPlayer &&
-                        board[row + 2][col + 2] == checkForPlayer) {
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            for (int j = 0; j <= BOARD_SIZE - FOR_WIN; j++) {
+                if (board[i][j] == checkForPlayer &&
+                        board[i + 1][j + 1] == checkForPlayer &&
+                        board[i + 2][j + 2] == checkForPlayer) {
                     return true;
                 }
             }
         }
 
         // Check all anti-diagonals (top-right to bottom-left)
-        for (int row = 0; row <= BOARD_SIZE - FOR_WIN; row++) {
-            for (int col = FOR_WIN - 1; col < BOARD_SIZE; col++) {
-                if (board[row][col] == checkForPlayer &&
-                        board[row + 1][col - 1] == checkForPlayer &&
-                        board[row + 2][col - 2] == checkForPlayer) {
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            for (int j = FOR_WIN - 1; j < BOARD_SIZE; j++) {
+                if (board[i][j] == checkForPlayer &&
+                        board[i + 1][j - 1] == checkForPlayer &&
+                        board[i + 2][j - 2] == checkForPlayer) {
                     return true;
                 }
             }
@@ -163,14 +152,11 @@ public class GameBoard implements IGameBoard
      */
     public int getWinner()
     {
-        /** if it is the turn of Player2, then the previous player was Player1
-         * and if there is a winner, then it is Player1, and vice versa
-         */
         if (activePlayer == BOARD_PLAYER1) {
-            return BOARD_PLAYER2;
+            return BOARD_PLAYER1;
         }
         else if (activePlayer == BOARD_PLAYER2) {
-            return BOARD_PLAYER1;
+            return BOARD_PLAYER2;
         }
         else return -1;
     }
@@ -199,6 +185,126 @@ public class GameBoard implements IGameBoard
         BOARD_SIZE = boardSize;
     }
 
+    public int[] copmuterIsPlaying() {
+        int[] blocking = blockingPlayer(BOARD_PLAYER1);
+        int[] winning = blockingPlayer(BOARD_PLAYER2);
+        int[] random = computerRandomPlay();
+        if (winning != null) {
+            if (play(winning[0], winning[1])) {  // Ensure the play is valid
+                System.out.println("Computer played (W): " + winning[0] + "-" + winning[1]);
+                return winning;
+            }
+        }
+        else if (blocking != null) {
+            if (play(blocking[0], blocking[1])) {  // Ensure the play is valid
+                System.out.println("Computer played (B): " + blocking[0] + "-" + blocking[1]);
+                return blocking;
+            }
+        }
+        else if (random != null) {
+            if (play(random[0], random[1])) {  // Ensure the play is valid
+                System.out.println("Computer played (R): " + random[0] + "-" + random[1]);
+                return random;
+            }
+        }
+        return null;
+    }
+    public int[] blockingPlayer(int playerToPlay) {
+    // FOR COLUMN
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j <= (BOARD_SIZE-FOR_WIN); j++) {
+                if (board[i][j] == playerToPlay &&
+                        board[i][j + 1] == playerToPlay &&
+                        board[i][j + 2] == BOARD_EMPTY_STATE)
+                    return new int[]  {i, (j+2)};
+                    else if (board[i][j] == BOARD_EMPTY_STATE &&
+                                board[i][j + 1] == playerToPlay &&
+                                board[i][j + 2] == playerToPlay) {
+                    return new int[] {i, (j)};
+                }
+            }
+        }
+
+        // FOR ROWS
+
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j <= BOARD_SIZE-FOR_WIN; j++) {
+                if (board[j][i] == playerToPlay
+                        && board[j + 1][i] == playerToPlay
+                        && board[j + 2][i] == BOARD_EMPTY_STATE) {
+
+                    return new int[] {(j+2), i};
+                }
+                else if (board[j][i] == BOARD_EMPTY_STATE
+                        && board[j + 1][i] == playerToPlay
+                        && board[j + 2][i] == playerToPlay) {
+                    return new int[] {(j), (i)};
+                }
+            }
+        }
+        // Check for diagonal
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            for (int j = 0; j <= BOARD_SIZE - FOR_WIN; j++) {
+                if (board[i][j] == BOARD_EMPTY_STATE &&
+                        board[i + 1][j + 1] == playerToPlay &&
+                        board[i + 2][j + 2] == playerToPlay) {
+                    return new int[] {i, j};
+                }
+            }
+        }// Check for diagonal
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            for (int j = 0; j <= BOARD_SIZE - FOR_WIN; j++) {
+                if (board[i][j] == playerToPlay &&
+                        board[i + 1][j + 1] == BOARD_EMPTY_STATE &&
+                        board[i + 2][j + 2] == playerToPlay) {
+                    return new int[] {i+1, j+1};
+                }
+            }
+        }
+        // Check for diagonal
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            for (int j = 0; j <= BOARD_SIZE - FOR_WIN; j++) {
+                if (board[i][j] == playerToPlay &&
+                        board[i + 1][j + 1] == playerToPlay &&
+                        board[i + 2][j + 2] == BOARD_EMPTY_STATE) {
+                    return new int[] {i+2, j+2};
+                }
+            }
+        }
+        // Check all anti-diagonals (top-right to bottom-left)
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            for (int j = FOR_WIN - 1; j < BOARD_SIZE; j++) {
+                if (board[j][i] == playerToPlay &&
+                        board[j - 1][i + 1] == playerToPlay &&
+                        board[j - 2][i + 2] == BOARD_EMPTY_STATE) {
+                    return new int[]{j-2, i+2};
+                }
+            }
+        }
+        // Check all anti-diagonals (top-right to bottom-left)
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            for (int j = FOR_WIN - 1; j < BOARD_SIZE; j++) {
+                if (board[j][i] == playerToPlay &&
+                        board[j - 1][i + 1] == BOARD_EMPTY_STATE &&
+                        board[j - 2][i + 2] == playerToPlay) {
+                    return new int[]{j-1, i+1};
+                }
+            }
+        }
+
+        // Check all anti-diagonals (top-right to bottom-left)
+        for (int i = 0; i <= BOARD_SIZE - FOR_WIN; i++) {
+            for (int j = FOR_WIN - 1; j < BOARD_SIZE; j++) {
+                if (board[j][i] == BOARD_EMPTY_STATE &&
+                        board[j - 1][i + 1] == playerToPlay &&
+                        board[j - 2][i + 2] == playerToPlay) {
+                    return new int[]{j, i};
+                }
+            }
+        }
+        return null;
+    }
+
     public int[] computerRandomPlay() {
         Random random = new Random();
         ArrayList<int[]> freeArray = new ArrayList<>();
@@ -211,21 +317,14 @@ public class GameBoard implements IGameBoard
                 }
             }
         }
-
         // Check if there are available moves and it's the computer's turn
         if (!freeArray.isEmpty() && numberOfSteps > 0 && numberOfSteps % 2 == 1) {
             int randomNumber = random.nextInt(freeArray.size());  // Use size of freeArray for the random index
             int[] nextStep = freeArray.get(randomNumber);         // Get random available position
             activePlayer = BOARD_PLAYER2;
-            // Make the computer's move at the randomly selected position
-            if (play(nextStep[0], nextStep[1])) {  // Ensure the play is valid
-                System.out.println("Computer played: " + nextStep[0] + "-" + nextStep[1]);
-                return new int[]{nextStep[0], nextStep[1]};       // Return the move coordinates
+            return nextStep;
             } else
-                return new int[0];  // Return empty array if no move was made
-
-        } else
-            return new int[0];  // Return empty array if no move was made
+                return null;  // Return empty array if no move was made
     }
 
     public int changeNumberOfPlayers() {
