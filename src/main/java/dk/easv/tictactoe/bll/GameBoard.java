@@ -209,7 +209,7 @@ public class GameBoard implements IGameBoard
         }
         return null;
     }
-    public int[] blockingPlayer(int playerToPlay) {
+    private int[] blockingPlayer(int playerToPlay) {
     // FOR COLUMN
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j <= (BOARD_SIZE-FOR_WIN); j++) {
@@ -305,7 +305,7 @@ public class GameBoard implements IGameBoard
         return null;
     }
 
-    public int[] computerRandomPlay() {
+    private int[] computerRandomPlay() {
         Random random = new Random();
         ArrayList<int[]> freeArray = new ArrayList<>();
 

@@ -25,6 +25,7 @@ import javafx.scene.layout.GridPane;
 // Project imports
 import dk.easv.tictactoe.bll.GameBoard;
 import dk.easv.tictactoe.bll.IGameBoard;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 
@@ -49,7 +50,7 @@ public class TicTacViewController implements Initializable
     @FXML
     private MenuItem menuPlayer;
     
-    private static final String TXT_PLAYER = "Player: ";
+    private static final String TXT_PLAYER = "Player";
     private IGameBoard game;
 
     /**
@@ -171,6 +172,7 @@ public class TicTacViewController implements Initializable
                 message = "Player " + ++winner + " wins!!!";
                 break;
         }
+        lblPlayer.setTextAlignment(TextAlignment.CENTER);
         lblPlayer.setText(message);
     }
 
