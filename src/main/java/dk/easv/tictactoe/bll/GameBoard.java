@@ -20,7 +20,7 @@ public class GameBoard implements IGameBoard
     private int activePlayer = 0;
     private int[][] board = new int[BOARD_SIZE][BOARD_SIZE];
     private int numberOfSteps = 0;
-    private int numberOfPlayers = 1;
+    private int numberOfPlayers = 2;
 
     /**
      * Returns 0 for player 0, 1 for player 1.
