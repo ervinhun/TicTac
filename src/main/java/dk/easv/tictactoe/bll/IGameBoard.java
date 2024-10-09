@@ -46,4 +46,18 @@ public interface IGameBoard
      * Resets the game to a new game state.
      */
     void newGame();
+
+    /**
+     * Gives back how many player(s) are playing
+     * @return
+     */
+    int getNumberOfPlayers();
+
+    /**
+     * In case of 1 player the computer plays the next move
+     * @return
+     */
+    int[] computerRandomPlay();
+
+    int changeNumberOfPlayers();
 }

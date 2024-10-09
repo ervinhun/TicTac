@@ -2,6 +2,7 @@
 package dk.easv.tictactoe.gui.controller;
 
 // Java imports
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,12 +18,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 
 // Project imports
 import dk.easv.tictactoe.bll.GameBoard;
 import dk.easv.tictactoe.bll.IGameBoard;
 import javafx.stage.Stage;
+
 
 /**
  *
@@ -41,6 +44,9 @@ public class TicTacViewController implements Initializable
 
     @FXML
     private GridPane gridPane;
+
+    @FXML
+    private MenuItem menuPlayer;
     
     private static final String TXT_PLAYER = "Player: ";
     private IGameBoard game;
@@ -64,7 +70,7 @@ public class TicTacViewController implements Initializable
                 int player = game.getNextPlayer();
                 Button btn = (Button) event.getSource();
                 String xOrO = player == 0 ? "X" : "O";
-                btn.setText(xOrO);
+                    btn.setText(xOrO);
                 if (game.isGameOver())
                 {
                     displayWinner(game.getWinner());
@@ -72,6 +78,7 @@ public class TicTacViewController implements Initializable
                 else
                 {
                         setPlayer();
+
                 }
             }
         } catch (Exception e)
@@ -89,7 +96,13 @@ public class TicTacViewController implements Initializable
     private void handleNewGame(ActionEvent event)
     {
         game.newGame();
-        setPlayer();
+        //setPlayer();
+        clearBoard();
+    }
+    private void handleNewGame()
+    {
+        game.newGame();
+        //setPlayer();
         clearBoard();
     }
 
@@ -117,7 +130,14 @@ public class TicTacViewController implements Initializable
      */
     private void setPlayer()
     {
+        int playerNumber = game.getNumberOfPlayers();
         int displayPlayer = game.getNextPlayer();
+
+        if (playerNumber == 1 && displayPlayer == 1) {
+            int [] move = game.computerRandomPlay();
+            setButtonText(move[0], move[1]);
+            //game.getNextPlayer();
+        }
         displayPlayer++;
         lblPlayer.setText(TXT_PLAYER + displayPlayer);
         game.getNextPlayer();
@@ -154,6 +174,7 @@ public class TicTacViewController implements Initializable
             Button btn = (Button) n;
             btn.setText("");
         }
+        lblPlayer.setText("Player: 1");
     }
 
     public void changeBoardSize(ActionEvent event) throws IOException {
@@ -183,5 +204,34 @@ public class TicTacViewController implements Initializable
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
+    public void setButtonText(int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            // Check if the node is at the desired column and row
+            if (GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) == row &&
+                    GridPane.getColumnIndex(node) != null && GridPane.getColumnIndex(node) == col) {
+
+                Button button = (Button) node;
+                String id = button.getId();
+                    button.setText("C");
+                    //button.setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                    System.out.println("Text set at button (" + col + ", " + row + "): " + id);
+                    break;  // Exit the loop once the button is found and updated
+
+            }
+        }
+    }
+
+
+    public void changePlayers(ActionEvent event) {
+        int playerForMenu = game.changeNumberOfPlayers();
+        System.out.println(game.getNumberOfPlayers());
+        menuPlayer.setText(playerForMenu + TXT_PLAYER);
+        handleNewGame();
     }
 }

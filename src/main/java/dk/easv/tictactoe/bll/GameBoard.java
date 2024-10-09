@@ -1,7 +1,17 @@
 
 package dk.easv.tictactoe.bll;
 
+import dk.easv.tictactoe.gui.controller.TicTacViewController;
+import javafx.concurrent.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -18,6 +28,7 @@ public class GameBoard implements IGameBoard
     private int activePlayer = 0;
     private int[][] board = new int[BOARD_SIZE][BOARD_SIZE];
     private int numberOfSteps = 0;
+    private int numberOfPlayers = 2;
 
     /**
      * Returns 0 for player 0, 1 for player 1.
@@ -31,10 +42,12 @@ public class GameBoard implements IGameBoard
             return BOARD_PLAYER1;
         }
         else {
-            activePlayer = BOARD_PLAYER1;
-            return BOARD_PLAYER2;
+
+                activePlayer = BOARD_PLAYER1;
+                return BOARD_PLAYER2;
+            }
         }
-    }
+
 
     /**
      * Attempts to let the current player play at the given coordinates. It the
@@ -171,7 +184,7 @@ public class GameBoard implements IGameBoard
             for (int j = 0; j < BOARD_SIZE; j++) {
                 board[i][j] = BOARD_EMPTY_STATE;
             }
-        //activePlayer = BOARD_PLAYER1;
+        activePlayer = BOARD_PLAYER1;
         numberOfSteps = 0;
         }
     }
@@ -179,7 +192,51 @@ public class GameBoard implements IGameBoard
     public int getBoardSize() {
         return BOARD_SIZE;
     }
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
     public void setBoardSize(int boardSize) {
         BOARD_SIZE = boardSize;
     }
-}
+
+    public int[] computerRandomPlay() {
+        Random random = new Random();
+        ArrayList<int[]> freeArray = new ArrayList<>();
+
+        // Collect all available (empty) positions on the board
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (board[i][j] == BOARD_EMPTY_STATE) {
+                    freeArray.add(new int[]{i, j});
+                }
+            }
+        }
+
+        // Check if there are available moves and it's the computer's turn
+        if (!freeArray.isEmpty() && numberOfSteps > 0 && numberOfSteps % 2 == 1) {
+            int randomNumber = random.nextInt(freeArray.size());  // Use size of freeArray for the random index
+            int[] nextStep = freeArray.get(randomNumber);         // Get random available position
+            activePlayer = BOARD_PLAYER2;
+            // Make the computer's move at the randomly selected position
+            if (play(nextStep[0], nextStep[1])) {  // Ensure the play is valid
+                System.out.println("Computer played: " + nextStep[0] + "-" + nextStep[1]);
+                return new int[]{nextStep[0], nextStep[1]};       // Return the move coordinates
+            } else
+                return new int[0];  // Return empty array if no move was made
+
+        } else
+            return new int[0];  // Return empty array if no move was made
+    }
+
+    public int changeNumberOfPlayers() {
+        if (numberOfPlayers == 2) {
+            numberOfPlayers = 1;
+            return 2;
+        }
+        else {
+            numberOfPlayers = 2;
+            return 1;
+        }
+    }
+    }
+

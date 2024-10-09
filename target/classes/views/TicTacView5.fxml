@@ -71,7 +71,7 @@
        <MenuButton mnemonicParsing="false" onAction="#handleNewGame" text="Menu" BorderPane.alignment="CENTER_RIGHT">
            <items>
                <MenuItem fx:id="btnNewGame" text="New game" onAction="#handleNewGame" />
-               <MenuItem fx:id="menuPlayer" text="1 Player" />
+               <MenuItem fx:id="menuPlayer" text="1 Player" onAction="#changePlayers"/>
                <MenuItem fx:id="menuSize" text="3x3" onAction="#changeBoardSize" />
            </items>
            <BorderPane.margin>
