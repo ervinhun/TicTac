@@ -238,7 +238,9 @@ public class TicTacViewController implements Initializable
 
                 Button button = (Button) node;
                 String id = button.getId();
-                button.setText("C");
+                button.setStyle("-fx-background-image: url('/images/O-tictactoe.png');"
+                        + "-fx-background-size: cover;"
+                        + "-fx-background-position: center center;");
                 //button.setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
                 System.out.println("Text set at button (" + col + ", " + row + "): " + id);
 

@@ -16,7 +16,7 @@ public class GameBoard implements IGameBoard
     private static final int BOARD_PLAYER1 = 0;
     private static final int BOARD_PLAYER2 = 1;
     private static int BOARD_SIZE = 3;
-    private static int FOR_WIN = 3;
+    private static final int FOR_WIN = 3;
     private int activePlayer = 0;
     private int[][] board = new int[BOARD_SIZE][BOARD_SIZE];
     private int numberOfSteps = 0;
