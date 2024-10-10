@@ -1,5 +1,46 @@
 #pane {
-    -fx-background-image: url(../images/background.jpg);
+    -fx-background-image: url(../images/retrocitytictactoe.gif);
     -fx-background-repeat: stretch;   
     -fx-background-position: center;
 }
+#lblPlayer {
+    -fx-text-fill: #CDCDCD; /* Fixed the hex color to be 6 digits */
+    -fx-font-weight: bold;  /* Use -fx-font-weight instead of -fx-font-style */
+}
+.menu-button {
+    -fx-background-color: linear-gradient(to bottom, #330066, #9900cc) !important; /* Neon purple gradient */
+    -fx-text-fill: #ffffff !important;
+    -fx-text-transform: uppercase;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-border-color: #00ffff !important; /* Cyan border */
+    -fx-border-width: 2px;
+    -fx-border-radius: 10;
+    -fx-padding: 2 7 2 7;
+}
+
+.menu-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #660099, #cc33ff) !important; /* Lighter neon purple on hover */
+    -fx-text-fill: #f2f2f2 !important; /* Light gray/white text on hover */
+    -fx-border-color: #ff66ff !important; /* Slightly lighter neon border on hover */
+}
+
+.menu-button .arrow {
+    -fx-background-color: transparent;
+    -fx-shape: "M 0 2 L 4 6 L 8 2 Z";
+    -fx-padding: 0 0 0 0;
+    -fx-background-radius: 0;
+    -fx-border-color: #00ffff !important;
+}
+
+.menu-item {
+    -fx-text-fill: #f2f2f2 !important; /* Light gray text */
+}
+
+.menu-item:hover {
+    -fx-background-color: #9900cc !important; /* Lighter purple on hover */
+    -fx-text-fill: #ffffff !important; /* White text on hover */
+}
+
+

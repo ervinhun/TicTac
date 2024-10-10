@@ -72,7 +72,14 @@ public class TicTacViewController implements Initializable
                 int player = game.getNextPlayer();
                 Button btn = (Button) event.getSource();
                 String xOrO = player == 0 ? "X" : "O";
-                btn.setText(xOrO);
+                if (xOrO.equals("X"))
+                    btn.setStyle("-fx-background-image: url('/images/X-tictactoe.png');"
+                            + "-fx-background-size: cover;"
+                            + "-fx-background-position: center center;");
+                else
+                    btn.setStyle("-fx-background-image: url('/images/O-tictactoe.png');"
+                            + "-fx-background-size: cover;"
+                            + "-fx-background-position: center center;");
 
                 if (game.isGameOver())
                 {
