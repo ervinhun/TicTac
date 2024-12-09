@@ -143,7 +143,7 @@ public class TicTacViewController implements Initializable
         int displayPlayer = game.getNextPlayer();
 
         if (playerNumber == 1 && displayPlayer == 1) {
-            int [] move = game.copmuterIsPlaying();
+            int [] move = game.computerIsPlaying();
             setButtonText(move[0], move[1]);
             if (game.isGameOver()) {
                 displayWinner(game.getWinner());
@@ -241,7 +241,6 @@ public class TicTacViewController implements Initializable
                 button.setStyle("-fx-background-image: url('/images/O-tictactoe.png');"
                         + "-fx-background-size: cover;"
                         + "-fx-background-position: center center;");
-                //button.setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
                 System.out.println("Text set at button (" + col + ", " + row + "): " + id);
 
                 break;  // Exit the loop once the button is found and updated
@@ -254,7 +253,7 @@ public class TicTacViewController implements Initializable
     public void changePlayers(ActionEvent event) {
         int playerForMenu = game.changeNumberOfPlayers();
         System.out.println(game.getNumberOfPlayers());
-        menuPlayer.setText(playerForMenu + TXT_PLAYER);
+        menuPlayer.setText(playerForMenu + " " + TXT_PLAYER);
         handleNewGame();
     }
 }

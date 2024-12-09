@@ -57,7 +57,7 @@ public interface IGameBoard
      * In case of 1 player the computer plays the next move
      * @return
      */
-    int[] copmuterIsPlaying();
+    int[] computerIsPlaying();
 
     int changeNumberOfPlayers();
 }

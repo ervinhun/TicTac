@@ -185,7 +185,7 @@ public class GameBoard implements IGameBoard
         BOARD_SIZE = boardSize;
     }
 
-    public int[] copmuterIsPlaying() {
+    public int[] computerIsPlaying() {
         int[] blocking = blockingPlayer(BOARD_PLAYER1);
         int[] winning = blockingPlayer(BOARD_PLAYER2);
         int[] random = computerRandomPlay();
